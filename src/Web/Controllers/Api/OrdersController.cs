@@ -21,8 +21,9 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<OrderDto>>> GetOrders([FromQuery] string userName)
+    public async Task<ActionResult<List<OrderDto>>> GetOrders()
     {
+        var userName = User.Identity?.Name;
         Guard.Against.NullOrEmpty(userName, nameof(userName));
         var orders = await _mediator.Send(new GetMyOrders(userName));
         var result = orders.Select(o => new OrderDto
